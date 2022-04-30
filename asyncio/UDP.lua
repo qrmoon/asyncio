@@ -19,11 +19,17 @@ function UDP:gettimeout(t)
   return self.timeout
 end
 
+function UDP:send(...)
+  return self.sock:send(...)
+end
+
+function UDP:sendto(...)
+  return self.sock:sendto(...)
+end
+
 for _, f in ipairs {
   "receive",
-  "receivefrom",
-  "send",
-  "sendfrom",
+  "receivefrom"
 } do
   UDP[f] = Socket._wrap_blocking(f)
 end
@@ -36,7 +42,7 @@ for _, f in ipairs {
   "setpeername",
   "setsockname",
   "setoption",
-  "setstats",
+  "setstats"
 } do
   UDP[f] = Socket._wrap(f)
 end
