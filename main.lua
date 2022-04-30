@@ -1,7 +1,7 @@
 local asyncio = require "asyncio"
 local fiber = require "fiber"
 
-local f = fiber:new(function()
+local client = fiber:new(function()
   local sock = asyncio.TCP:new()
   print "Connecting..."
   local ok, err = fiber.wait_for(5, function()
@@ -51,4 +51,4 @@ local server = fiber:new(function()
   end
 end)
 
-fiber.loop { f, server }
+fiber.loop { client, server }
