@@ -1,5 +1,5 @@
 package = "asyncio"
-version = "0.1"
+version = "0.1-1"
 source = {
    url = "git+https://github.com/qrmoon/asyncio-proto.git"
 }
