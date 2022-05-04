@@ -1,5 +1,5 @@
 package = "asyncio"
-version = "0.1-1"
+version = "0.1-2"
 source = {
    url = "git+https://github.com/qrmoon/asyncio-proto.git"
 }
@@ -10,7 +10,8 @@ description = {
 dependencies = {
    "lua >= 5.1, < 5.5",
    "qlass >= 0.1",
-   "fiber >= 0.1"
+   "fiber >= 0.1",
+   "luasocket >= 3.0"
 }
 build = {
    type = "builtin",
