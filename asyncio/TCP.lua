@@ -9,7 +9,7 @@ local TCP = Socket "asyncio.TCP"
 function TCP:init(sock)
   self.sock = sock or socket.tcp()
   self.sock:settimeout(0)
-  self.timeout = 0
+  self.timeout = nil
 end
 
 function TCP:settimeout(t)
@@ -22,7 +22,7 @@ end
 
 function TCP:accept()
   local sock, err
-  if self.timeout == 0 then
+  if not self.timeout then
     fiber.wait(function()
       sock, err = self.sock:accept()
       return err ~= "timeout"
@@ -56,7 +56,7 @@ TCP.receive = Socket._wrap_blocking "receive"
 
 function TCP:send(s, i, j)
   local i = i or 1
-  if self.timeout == 0 then
+  if not self.timeout then
     return fiber.wait(function()
       local ok, err, index = self.sock:send(s, i, j)
       if err == "timeout" then

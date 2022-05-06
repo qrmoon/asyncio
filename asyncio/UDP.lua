@@ -8,7 +8,7 @@ local UDP = Socket "asyncio.UDP"
 function UDP:init(sock)
   self.sock = sock or socket.udp()
   self.sock:settimeout(0)
-  self.timeout = 0
+  self.timeout = nil
 end
 
 function UDP:settimeout(t)

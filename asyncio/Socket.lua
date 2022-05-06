@@ -19,13 +19,14 @@ function Socket._wrap_blocking(f)
     local func = function()
       local res = { self.sock[f](self.sock, table.unpack(args)) }
       local ok, err = res[1], res[2]
-      if not ok and err == "timeout" then
+      if not ok and
+         (err == "timeout" or err == "wantread" or err == "wantwrite") then
         return false
       end
       return true, table.unpack(res)
     end
     local res
-    if self.timeout == 0 then
+    if not self.timeout then
       res = { fiber.wait(func) }
     else
       res = { fiber.wait_for(self.timeout, func) }
