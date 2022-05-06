@@ -1,6 +1,7 @@
 local class = require "class"
 local fiber = require "fiber"
 local socket = require "socket"
+local ssl
 
 local Socket = require "asyncio.Socket"
 
@@ -37,6 +38,22 @@ function TCP:accept()
     sock = TCP:new(sock)
   end
   return sock, err
+end
+
+function TCP:ssl(params)
+  if not ssl then
+    ssl = require "ssl"
+  end
+  local sock, err = ssl.wrap(self.sock, params)
+  self.sock = sock
+  return sock, err
+end
+
+function TCP:dohandshake()
+  if not ssl then
+    ssl = require "ssl"
+  end
+  return self.sock:dohandshake()
 end
 
 -- function TCP:connect(...)
