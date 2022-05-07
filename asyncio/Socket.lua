@@ -2,6 +2,8 @@ local class = require "class"
 local socket = require "socket"
 local fiber = require "fiber"
 
+local unpack = table.unpack or unpack
+
 local Socket = class:abstract "asyncio.Socket"
 
 function Socket:__index(k)
@@ -17,13 +19,13 @@ function Socket._wrap_blocking(f)
   return function(self, ...)
     local args = { ... }
     local func = function()
-      local res = { self.sock[f](self.sock, table.unpack(args)) }
+      local res = { self.sock[f](self.sock, unpack(args)) }
       local ok, err = res[1], res[2]
       if not ok and
          (err == "timeout" or err == "wantread" or err == "wantwrite") then
         return false
       end
-      return true, table.unpack(res)
+      return true, unpack(res)
     end
     local res
     if not self.timeout then
@@ -31,7 +33,7 @@ function Socket._wrap_blocking(f)
     else
       res = { fiber.wait_for(self.timeout, func) }
     end
-    return select(2, table.unpack(res))
+    return select(2, unpack(res))
   end
 end
 
